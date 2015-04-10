@@ -8,6 +8,43 @@ while [ -h "$SOURCE" ]; do
 done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
+VOLUMES_PATH=$DIR/arlekin
+
+VOLUMES_COUNT=`ls -l $VOLUMES_PATH 2> /dev/null | grep ^d | wc -l`
+
+if [ $VOLUMES_COUNT = 0 ]
+then
+    echo 'Missing volumes, aborting.';
+    exit 1
+fi
+
+VOLUMES=""
+
+for FILE in $VOLUMES_PATH/*
+do
+  VOLUMES=$VOLUMES" -v $FILE:/home/r/`basename $FILE`"
+done
+
+ARLEKIN_MARIADB_EXISTS=`docker inspect --format="{{ .Id }}" arlekin-mariadb 2> /dev/null`
+ARLEKIN_MARIADB_DATA_EXISTS=`docker inspect --format="{{ .Id }}" arlekin-mariadb-data 2> /dev/null`
+
+if [ -z "$ARLEKIN_MARIADB_DATA_EXISTS" ]
+then
+  docker run -d -v /var/lib/mysql --name arlekin-mariadb-data ubuntu:14.04
+fi
+
+if ! [ -z "$ARLEKIN_MARIADB_EXISTS" ]
+then
+  docker kill arlekin-mariadb
+  docker rm arlekin-mariadb
+fi
+
+docker run \
+-p 3306:3306 \
+--volumes-from arlekin-mariadb-data \
+--name arlekin-mariadb \
+-d bmichalski/mariadb
+
 ARLEKIN_DATA_EXISTS=`docker inspect --format="{{ .Id }}" arlekin-data 2> /dev/null`
 
 if [ -z "$ARLEKIN_DATA_EXISTS" ]
@@ -15,18 +52,11 @@ then
   docker run -d -v /home/r/.composer --name arlekin-data debian
 fi
 
-VEES=""
-
-for FILE in $DIR/arlekin/*
-do
-  VEES=$VEES" -v $FILE:/home/r/`basename $FILE`"
-done
-
 docker \
   run \
   --rm \
   -it \
-  $VEES \
+  $VOLUMES \
   --volumes-from arlekin-data \
-  --link mariadb:mysql \
+  --link arlekin-mariadb:mysql \
   bmichalski/arlekin-dev-sandbox
