@@ -10,7 +10,22 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 VOLUMES_PATH=$DIR/arlekin
 
-VOLUMES_COUNT=`ls -l $VOLUMES_PATH 2> /dev/null | grep ^d | wc -l`
+ARLEKIN_FOLDERS='arlekin-core 
+arlekin-dbal 
+arlekin-dbal-driver-pdo-mysql 
+arlekin-dbal-migration 
+arlekin-dbal-migration-driver-pdo-mysql 
+arlekin-dml 
+arlekin-dml-driver-pdo-mysql'
+
+VOLUMES_COUNT=0
+
+for FOLDER in $ARLEKIN_FOLDERS
+do
+  if [ -d $VOLUMES_PATH/$FOLDER ]; then
+    VOLUMES_COUNT=$(($VOLUMES_COUNT + 1))
+  fi
+done
 
 if [ $VOLUMES_COUNT = 0 ]
 then
