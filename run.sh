@@ -4,18 +4,18 @@ SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do
   DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
   SOURCE="$(readlink "$SOURCE")"
-  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" 
+  [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
 done
 DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 VOLUMES_PATH=$DIR/arlekin
 
-ARLEKIN_FOLDERS='arlekin-core 
-arlekin-dbal 
-arlekin-dbal-driver-pdo-mysql 
-arlekin-dbal-migration 
-arlekin-dbal-migration-driver-pdo-mysql 
-arlekin-dml 
+ARLEKIN_FOLDERS='arlekin-core
+arlekin-dbal
+arlekin-dbal-driver-pdo-mysql
+arlekin-dbal-migration
+arlekin-dbal-migration-driver-pdo-mysql
+arlekin-dml
 arlekin-dml-driver-pdo-mysql'
 
 VOLUMES_COUNT=0
@@ -58,7 +58,7 @@ docker run \
 -p 3306:3306 \
 --volumes-from arlekin-mariadb-data \
 --name arlekin-mariadb \
--d bmichalski/mariadb
+-d bmichalski/docker-mariadb
 
 ARLEKIN_DATA_EXISTS=`docker inspect --format="{{ .Id }}" arlekin-data 2> /dev/null`
 
