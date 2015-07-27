@@ -35,9 +35,9 @@ fi
 
 VOLUMES=""
 
-for FILE in $VOLUMES_PATH/*
+for FOLDER in $ARLEKIN_FOLDERS
 do
-  VOLUMES=$VOLUMES" -v $FILE:/home/r/`basename $FILE`"
+    VOLUMES=$VOLUMES" -v $VOLUMES_PATH/$FOLDER:/home/r/$FOLDER"
 done
 
 ARLEKIN_MARIADB_EXISTS=`docker inspect --format="{{ .Id }}" arlekin-mariadb 2> /dev/null`
@@ -74,4 +74,5 @@ docker \
   $VOLUMES \
   --volumes-from arlekin-data \
   --link arlekin-mariadb:mysql \
+  --name arlekin-dev-sandbox \
   bmichalski/arlekin-dev-sandbox
