@@ -10,7 +10,7 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 VOLUMES_PATH=$DIR/arlekin
 
-ARLEKIN_FOLDERS='arlekin-core
+ARLEKIN_FOLDERS='arlekin-common
 arlekin-dbal
 arlekin-dbal-driver-pdo-mysql
 arlekin-dbal-migration
