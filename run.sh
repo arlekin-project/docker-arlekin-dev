@@ -10,13 +10,9 @@ DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 
 VOLUMES_PATH=$DIR/arlekin
 
-ARLEKIN_FOLDERS='arlekin-common
+ARLEKIN_FOLDERS='
 arlekin-dbal
-arlekin-dbal-driver-pdo-mysql
-arlekin-dbal-migration
-arlekin-dbal-migration-driver-pdo-mysql
-arlekin-dml
-arlekin-dml-driver-pdo-mysql'
+'
 
 VOLUMES_COUNT=0
 
@@ -60,6 +56,7 @@ docker run \
 --name arlekin-mariadb \
 -d bmichalski/docker-mariadb
 
+ARLEKIN_DEV_EXISTS=`docker inspect --format="{{ .Id }}" arlekin-dev 2> /dev/null`
 ARLEKIN_DATA_EXISTS=`docker inspect --format="{{ .Id }}" arlekin-data 2> /dev/null`
 
 if [ -z "$ARLEKIN_DATA_EXISTS" ]
@@ -74,5 +71,5 @@ docker \
   $VOLUMES \
   --volumes-from arlekin-data \
   --link arlekin-mariadb:mysql \
-  --name arlekin-dev-sandbox \
-  bmichalski/arlekin-dev-sandbox
+  --name arlekin-dev \
+  bmichalski/arlekin-dev
