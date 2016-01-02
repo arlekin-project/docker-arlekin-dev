@@ -64,6 +64,12 @@ then
   docker run -d -v /home/r/.composer --name arlekin-data debian
 fi
 
+if ! [ -z "$ARLEKIN_DEV_EXISTS" ]
+then
+  docker kill arlekin-dev
+  docker rm arlekin-dev
+fi
+
 docker \
   run \
   --rm \
