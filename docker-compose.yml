@@ -1,0 +1,19 @@
+version: "2"
+
+volumes:
+  data-volume:
+
+services:
+  mariadb:
+    image: mariadb:10
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+  php:
+    build: ./php
+    ports:
+      - $SSH_PORT:22
+    volumes:
+      - data-volume:/home/r
+      - ./conf/etc/ssh/sshd_config:/etc/ssh/sshd_config:ro
+      - ./conf/etc/php/7.0/cli/php.ini:/etc/php/7.0/cli/php.ini:ro
+      - ./conf/etc/php/7.0/cli-composer/php.ini:/etc/php/7.0/cli-composer/php.ini:ro
