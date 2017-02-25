@@ -20,7 +20,9 @@ RUN \
 
     vim \
 
-    inetutils-ping
+    inetutils-ping \
+
+    php7.0-mysql
 
 RUN \
   adduser --disabled-login --uid 1042 --gecos 'r' r && \
