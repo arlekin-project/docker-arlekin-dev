@@ -8,6 +8,8 @@ services:
     image: mariadb:10
     environment:
       - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
+    ports:
+      - 3306
   php:
     build: ./php
     ports:
