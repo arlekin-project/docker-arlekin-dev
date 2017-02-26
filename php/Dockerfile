@@ -2,12 +2,19 @@ FROM ubuntu:16.04
 
 RUN \
   apt-get update -y && \
+  apt-get install -y software-properties-common
+
+RUN \
+  LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
+
+RUN \
+  apt-get update -y && \
   apt-get install -y \
-    php7.0-cli \
-    php7.0-dev \
-    php7.0-curl \
-    php7.0-zip \
-    php-xdebug \
+    php7.1-cli \
+    php7.1-dev \
+    php7.1-curl \
+    php7.1-zip \
+    php7.1-xdebug \
 
     openssh-server \
     sudo \
@@ -22,7 +29,8 @@ RUN \
 
     inetutils-ping \
 
-    php7.0-mysql
+    php7.1-mysql \
+    php7.1-mbstring
 
 RUN \
   adduser --disabled-login --uid 1042 --gecos 'r' r && \
